@@ -1,0 +1,44 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Converter</title>
+</head>
+<body>
+  <h1>English ↔ Number Converter</h1>
+
+  <label><input type="radio" name="mode" value="engToNum" checked> English → Number</label>
+  <label><input type="radio" name="mode" value="numToEng"> Number → English</label>
+  <br><br>
+
+  <input id="inputText" placeholder="Enter text" style="width:80%">
+  <button onclick="convert()">Convert</button>
+
+  <pre id="result" style="white-space: pre-wrap;"></pre>
+
+  <script>
+    const letterToNum = {A:'2',B:'4',C:'6',D:'8',E:'10',F:'11',G:'13',H:'15',I:'16',J:'18',K:'20',L:'22',M:'23',N:'25',O:'26',P:'24',Q:'19',R:'21',S:'17',T:'14',U:'12',V:'9',W:'7',X:'5',Y:'3',Z:'1',' ':'0'};
+    const numToLetter = Object.fromEntries(Object.entries(letterToNum).map(([k,v]) => [v,k]));
+
+    function convert(){
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+      const input = document.getElementById('inputText').value.trim();
+      let output = '';
+
+      if(mode === 'engToNum'){
+        for(let c of input){
+          let u = c.toUpperCase();
+          output += letterToNum[u] ?? c;
+          if(letterToNum[u]) output += '/';
+        }
+        if(output.endsWith('/')) output = output.slice(0,-1);
+      } else {
+        for(let part of input.split('/')){
+          output += numToLetter[part] ?? `[${part}]`;
+        }
+      }
+
+      document.getElementById('result').textContent = output;
+    }
+  </script>
+</body>
+</html>
